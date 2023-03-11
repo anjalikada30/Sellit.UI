@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Tab, Tabs } from '@mui/material';
+import logo from '../../assets/logo.png';
 
 const pages = ['Product List', 'Fav List'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -19,6 +21,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [value, setValue] = React.useState(0);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,28 +39,9 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" style={{backgroundColor: "white"}}>
+    <AppBar position="static" sx={{ background: "white", height: "8vh" }} >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -66,6 +50,7 @@ function Header() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+              style={{ color: "black" }}
             >
               <MenuIcon />
             </IconButton>
@@ -86,6 +71,7 @@ function Header() {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
+              style={{ color: "black" }}
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -94,35 +80,24 @@ function Header() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
+          <Box
+            component="img"
             sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              height: 64,
             }}
-          >
-            LOGO
-          </Typography>
+            alt="sell-it"
+            src={logo}
+          />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Tabs sx={{ marginLeft: "30vw", color: "black" }}
+              indicatorColor="secondary"
+              textColor="inherit"
+              value={value}
+              onChange={(e, value) => setValue(value)}>
+              {pages.map((page) => (
+                <Tab label={page} key={page} />
+              ))}
+            </Tabs>
           </Box>
 
           {/* <Box sx={{ flexGrow: 0 }}>
