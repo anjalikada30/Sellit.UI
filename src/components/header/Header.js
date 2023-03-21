@@ -14,14 +14,34 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Tab, Tabs } from '@mui/material';
 import logo from '../../assets/logo.png';
+import { Link } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import AddIcon from '@mui/icons-material/Add';
+import { SellProduct } from '../sell-product';
+import './header.css';
 
-const pages = ['Product List', 'Fav List'];
+const pages = [
+  {
+    label: "Home",
+    route: "/home"
+  },
+  {
+    label: "All Bids",
+    route: "/all-bids"
+  },
+  {
+    label: "Bookmarks",
+    route: "/bookmarks"
+  }
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [value, setValue] = React.useState(0);
+  const [openSellModal, setOpenSellModal] = React.useState(false)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -39,7 +59,8 @@ function Header() {
   };
 
   return (
-    <AppBar position="static" sx={{ background: "white", height: "8vh" }} >
+    <>
+    <AppBar position="static" sx={{ background: "white" }} >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -74,8 +95,8 @@ function Header() {
               style={{ color: "black" }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.label} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -89,21 +110,26 @@ function Header() {
             src={logo}
           />
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Tabs sx={{ marginLeft: "30vw", color: "black" }}
+            <Tabs sx={{ marginLeft: "25vw", color: "black" }}
               indicatorColor="secondary"
               textColor="inherit"
               value={value}
               onChange={(e, value) => setValue(value)}>
               {pages.map((page) => (
-                <Tab label={page} key={page} />
+                <Tab label={page.label} index={0} component={Link} to={page.route} />
               ))}
             </Tabs>
           </Box>
-
-          {/* <Box sx={{ flexGrow: 0 }}>
+          <Button variant="contained" startIcon={<AddIcon />} sx={{ margin: 2 }} onClick={()=>setOpenSellModal(true)}>
+            Sell
+          </Button>
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: 2 }}>
+            <NotificationsNoneIcon sx={{ fontSize: 25 }} />
+          </IconButton>
+          <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, marginRight: 2 }}>
+                <AccountCircleIcon sx={{ fontSize: 35 }} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -128,10 +154,16 @@ function Header() {
                 </MenuItem>
               ))}
             </Menu>
-          </Box> */}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
+    {
+      openSellModal ?
+      <SellProduct handleClose={()=>setOpenSellModal(false)} />
+      : null
+    }
+    </>
   );
 }
 export default Header;
